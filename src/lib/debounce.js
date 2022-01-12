@@ -19,7 +19,7 @@ function debounce(fn, delay, immdiate = false) {
   let isInvoke = false
 
   // 默认的监听回调函数是可以传参的，比如说e，事件对象，所以放在arg中
-  return function _debounce(...arg) {
+  function _debounce(...arg) {
     /**
      * 如果执行到这儿，说明两种情况
      * - 时间没到，但是监听的事件又触发了，上一个定时器肯定还没有执行，清除；
@@ -44,9 +44,18 @@ function debounce(fn, delay, immdiate = false) {
 
         // 当执行了一次回调之后，将isInoke还原，当我们停止输入时,让下一次再进行立即执行
         isInvoke = false
+        timer = null
       }, delay)
     }
+  }
 
+  // 取消功能
+  _debounce.cancel = function () {
+    if (timer) clearTimeout(timer)
+    timer = null
+    isInvoke = false
 
   }
+
+  return _debounce
 }
