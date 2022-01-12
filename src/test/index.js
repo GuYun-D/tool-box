@@ -7,4 +7,4 @@ const inputChange = function (e) {
   console.log(e, this)
 }
 
-input.addEventListener('input', debounce(inputChange, 3000))
+input.addEventListener('input', debounce(inputChange, 3000, true))
