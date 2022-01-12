@@ -11,7 +11,8 @@
 function debounce(fn, delay) {
   // 存储定时器的标识符，防抖的目的就是当再次触发监听的事件时，定时器就得清除，只到正好到了延迟时间时才会触发处理的回调函数
   let timer = null
-  return function _debounce() {
+  // 默认的监听回调函数是可以传参的，比如说e，事件对象，所以放在arg中
+  return function _debounce(...arg) {
     /**
      * 如果执行到这儿，说明两种情况
      * - 时间没到，但是监听的事件又触发了，上一个定时器肯定还没有执行，清除；
@@ -19,7 +20,12 @@ function debounce(fn, delay) {
      */
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => {
-      fn()
+      /**
+       * 函数this绑定,回调函数中应该是能访问到this的，这个this应该是dom元素
+       * input.addEventListener('input', debounce(inputChange, 3000))中执行的函数是_debounce函数
+       * 所以这个函数内部的this就是_debounce的this，定时器回调使用了箭头函数，所以箭头函数的this就是_debounce的this
+       */
+      fn.apply(this, arg)
     }, delay)
   }
 }
