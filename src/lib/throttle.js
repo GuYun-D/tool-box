@@ -54,5 +54,11 @@ function throttle(fn, interval, options = {
     }
   }
 
+  _throttle.cancel = function (){
+    if(timer) clearTimeout(timer)
+    timer = null
+    lastTime = 0
+  }
+
   return _throttle
 }

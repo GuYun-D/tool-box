@@ -8,4 +8,11 @@ const inputChange = function (e) {
   console.log(e)
 }
 
-input.addEventListener('input', throttle(inputChange, 3000, { leading: true, trailing: true }))
+
+const _throttleFn = throttle(inputChange, 5000, { leading: true, trailing: true })
+
+input.addEventListener('input', _throttleFn)
+
+btn.addEventListener('click', () => {
+  _throttleFn.cancel()
+})
