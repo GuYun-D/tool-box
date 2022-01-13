@@ -24,6 +24,9 @@ const testObj = {
   mapValue: new Map([['1', "1234"], ["123", "768585"]])
 }
 
+// 循环引用
+testObj.info = testObj
+
 const newObj = deepclone(testObj)
 newObj.hobboes.one = "hahahah"
 

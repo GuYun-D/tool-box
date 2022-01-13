@@ -3,7 +3,8 @@
  * @param {Object} origin 要拷贝的对象
  * @returns {Object} content 拷贝成功之后的新对象
  */
-function deepclone(origin) {
+
+function deepclone(origin, map = new WeakMap()) {
   // map 和 set 的拷贝目前依旧是浅拷贝，并没有对其键值进行判断
   // 如果是set
   if (origin instanceof Set) {
@@ -24,17 +25,23 @@ function deepclone(origin) {
   // 先进行第一次判断，如果是基本数据类型，直接返回
   if (!isObject(origin)) return origin
 
+  if (map.has(origin)) {
+    return map.get(origin)
+  }
+
   const content = Array.isArray(origin) ? [] : {}
 
+  map.set(origin, content)
+
   for (const key in origin) {
-    content[key] = deepclone(origin[key])
+    content[key] = deepclone(origin[key], map)
   }
 
   // forin无法遍历出symbol，所以使用forof
   // 获取到对象中的所有symbol键
   const symbolKeys = Object.getOwnPropertySymbols(origin)
   for (const sKey of symbolKeys) {
-    content[sKey] = deepclone(origin[sKey])
+    content[sKey] = deepclone(origin[sKey], map)
   }
 
   return content
