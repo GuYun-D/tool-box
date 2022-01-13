@@ -15,7 +15,7 @@ function throttle(fn, interval, options = {
   let lastTime = 0
   let timer = null
 
-  const _throttle = function () {
+  const _throttle = function (...args) {
     // 记录此时要触发事件的事件
     const nowTime = new Date().getTime()
     // leading = false 时，第一次不会触发，及nowTime - lastTime = 0 时，但是仅限第一次，第一次lastTime = 0时 !0 = true 
@@ -30,7 +30,7 @@ function throttle(fn, interval, options = {
         timer = null
       }
 
-      fn()
+      fn.apply(this, args)
       // 保留上一次触时间
       lastTime = nowTime
 
@@ -46,9 +46,10 @@ function throttle(fn, interval, options = {
         /**
          * 如果配置了第一次执行的话，那么lastTime应该是0，若没有配置那么应该等于当前时间
          * 处理原因见图解
-         */ 
+         */
         lastTime = !leading ? 0 : new Date().getTime()
-        fn()
+        fn.apply(this, args)
+
       }, remainTime);
     }
   }
