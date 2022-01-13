@@ -6,4 +6,4 @@ const inputChange = function () {
   console.log("输入框发生改变");
 }
 
-input.addEventListener('input', throttle(inputChange, 3000))
+input.addEventListener('input', throttle(inputChange, 3000, { leading: false, trailing: true }))
