@@ -7,10 +7,10 @@
 
 function throttle(fn, interval, options = {
   leading: true,
-  trailing: false
+  trailing: false,
 }) {
   // 获取其他配置
-  const { leading, trailing } = options
+  const { leading, trailing, resultCallBack } = options
   // lastTime，回调函数执行的最后时刻
   let lastTime = 0
   let timer = null
@@ -30,7 +30,9 @@ function throttle(fn, interval, options = {
         timer = null
       }
 
-      fn.apply(this, args)
+      const result = fn.apply(this, args)
+      // promise 不优雅，不做了
+      if (resultCallBack && typeof resultCallBack === "function") resultCallBack(result)
       // 保留上一次触时间
       lastTime = nowTime
 
@@ -48,14 +50,16 @@ function throttle(fn, interval, options = {
          * 处理原因见图解
          */
         lastTime = !leading ? 0 : new Date().getTime()
-        fn.apply(this, args)
+        const result = fn.apply(this, args)
+
+        if (resultCallBack && typeof resultCallBack === "function") resultCallBack(result)
 
       }, remainTime);
     }
   }
 
-  _throttle.cancel = function (){
-    if(timer) clearTimeout(timer)
+  _throttle.cancel = function () {
+    if (timer) clearTimeout(timer)
     timer = null
     lastTime = 0
   }
