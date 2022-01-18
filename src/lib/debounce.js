@@ -38,7 +38,7 @@ function debounce(fn, delay, immdiate = false, resultCallback) {
         if (resultCallback && typeof resultCallback === "function") resultCallback(result)
         resolve(result)
         // 当立即执行了之后，置为false，直到回调执行了之后再开启立即执行
-        isInvoke = false
+        isInvoke = true
       } else {
         timer = setTimeout(() => {
           /**
