@@ -4,15 +4,15 @@ let id = 0
 
 const inputChange = function (e) {
   console.log("输入框发生改变");
-  console.log(this)
-  console.log(e)
+  // console.log(this)
+  // console.log(e)
 
   return "哈哈哈哈哈"
 }
 
 
 const _throttleFn = throttle(inputChange, 5000, {
-  leading: true, trailing: true, resultCallBack: function (res) {
+ trailing: true, resultCallBack: function (res) {
     console.log(res);
   }
 })
